@@ -1,10 +1,13 @@
 FROM jenkins/jenkins:lts
 
-# Указываем переменную окружения PORT
-ENV PORT=8080
+# Устанавливаем дополнительные плагины Jenkins (при необходимости)
+RUN jenkins-plugin-cli --plugins "pipeline-multibranch-step git"
 
-# Экспортируем порты
+# Открытые порты для Jenkins
 EXPOSE 8080 50000
 
-# Команда запуска Jenkins
-CMD ["java", "-jar", "/usr/share/jenkins/jenkins.war", "--httpPort=${PORT}"]
+# Устанавливаем рабочую директорию
+WORKDIR /var/jenkins_home
+
+# Команда для запуска Jenkins
+CMD ["java", "-jar", "/usr/share/jenkins/jenkins.war"]
